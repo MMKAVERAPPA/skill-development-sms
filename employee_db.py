@@ -21,7 +21,8 @@ def connect_to_database():
                 id INT AUTO_INCREMENT PRIMARY KEY,
                 name VARCHAR(255) NOT NULL,
                 age INT,
-                gender VARCHAR(10)
+                gender VARCHAR(10),
+                department VARCHAR(20)
             )
             """
             cursor.execute(create_table_query)
@@ -29,13 +30,13 @@ def connect_to_database():
 
             # Step 3: Insert records into the table (Create)
             insert_query = """
-            INSERT INTO employee (name, age, gender)
-            VALUES (%s, %s, %s)
+            INSERT INTO employee (name, age, gender,department)
+            VALUES (%s, %s, %s,%s)
             """
             employee_records = [
-                ('Alice', 22, 'Female'),
-                ('Bob', 24, 'Male'),
-                ('Charlie', 23, 'Male')
+                ('Alice', 22, 'Female','HR'),
+                ('Bob', 24, 'Male','Cyber'),
+                ('Charlie', 23, 'Male','Computer')
             ]
             cursor.executemany(insert_query, employee_records)
             connection.commit()
@@ -47,7 +48,7 @@ def connect_to_database():
             records = cursor.fetchall()
             print("Fetching data from 'employee' table:")
             for row in records:
-                print(f"ID: {row[0]}, Name: {row[1]}, Age: {row[2]}, Gender: {row[3]}")
+                print(f"ID: {row[0]}, Name: {row[1]}, Age: {row[2]}, Gender: {row[3]}, Department: {row[4]}")
 
             # Step 5: Update records in the table (Update)
             update_query = """
@@ -65,7 +66,7 @@ def connect_to_database():
             records = cursor.fetchall()
             print("Data after update:")
             for row in records:
-                print(f"ID: {row[0]}, Name: {row[1]}, Age: {row[2]}, Gender: {row[3]}")
+                print(f"ID: {row[0]}, Name: {row[1]}, Age: {row[2]}, Gender: {row[3]}, Department: {row[4]}")
 
             # Step 6: Delete records from the table (Delete)
             delete_query = "DELETE FROM employee WHERE name = %s"
@@ -79,7 +80,7 @@ def connect_to_database():
             records = cursor.fetchall()
             print("Data after deletion:")
             for row in records:
-                print(f"ID: {row[0]}, Name: {row[1]}, Age: {row[2]}, Gender: {row[3]}")
+                print(f"ID: {row[0]}, Name: {row[1]}, Age: {row[2]}, Gender: {row[3]}, Department: {row[4]}")
 
             # Step 7: Drop the table after operations (Cleanup)
             drop_table_query = "DROP TABLE IF EXISTS employee"
