@@ -1,4 +1,4 @@
-from django.shortcuts import render, get_object_or_404, redirect
+from django.shortcuts import render, redirect,get_object_or_404
 from django.http import HttpResponse
 from .models import Students
 
@@ -22,19 +22,31 @@ def contact(request):
 # Create new student
 def student_create(request):
     if request.method == 'POST':
-        name = request.POST.get('name')
-        age = request.POST.get('age')
-        if name and age:
-            Students.objects.create(name=name, age=age)
-            return redirect('student_list')
-    return render(request, 'student_form.html')
+        fname = request.POST['first_name']
+        lname = request.POST['last_name']
+        email = request.POST['email']
+        ph_num = request.POST['phone_number']
+        dob = request.POST['date_of_birth']
+        
+        Students.objects.create(
+            first_name = fname,
+            last_name = lname,
+            email = email,
+            phone_number = ph_num,
+            date_of_birth = dob,
+        )
+        return redirect('student_list')
+    return render(request,'student_form.html')
 
 # Update existing student
 def student_update(request, id):
     student = get_object_or_404(Students, id=id)
     if request.method == 'POST':
-        student.name = request.POST.get('name')
-        student.age = request.POST.get('age')
+        student.first_name = request.POST['first_name']
+        student.last_name = request.POST['last_name']
+        student.email = request.POST['email']
+        student.phone_number = request.POST['phone_number']
+        student.date_of_birth = request.POST['date_of_birth']
         student.save()
         return redirect('student_list')
     return render(request, 'student_form.html', {'student': student})
